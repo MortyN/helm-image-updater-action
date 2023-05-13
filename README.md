@@ -46,7 +46,7 @@ npm install @actions/github
 npm i -g @vercel/ncc
 ```
 
-### Other useful docs
+### Useful docs
 
- - [Rate limits, Resources in the REST API \(GitHub REST API\)](docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#rate-limits)
- - [Create a repository dispatch event \(GitHub REST API\)](docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
+ - [Rate limits, Resources in the REST API \(GitHub REST API\)](https://docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#rate-limits)
+ - [Create a repository dispatch event, Repositories \(GitHub REST API\)](https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
