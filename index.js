@@ -6,13 +6,6 @@ const regexAppVersion = /appVersion:(.*)?/;
 const regexSemVer =
   /(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?/;
 
-function verifySemVer(version) {
-  if (!regexSemVer.test(version)) {
-    throw new Error("semantic version is invalid");
-  }
-  return version;
-}
-
 function readChart(dir) {
   try {
     var chartYamlContent = fs.readFileSync(dir, "utf8", (err, data) => {
@@ -21,20 +14,18 @@ function readChart(dir) {
         return;
       }
     });
+    return chartYamlContent;
   } catch (e) {
     console.error(e);
-    return chartYamlContent;
+    return;
   }
 }
 
-function changeAppVersion(dir, semVersion, isSemVer) {
-
-  var updatedChartYamlContent = chartYamlContent.replace(
+function changeAppVersion(content, dir, version, isSemVer) {
+  var updatedChartYamlContent = content.replace(
     regexAppVersion,
-    "appVersion: " + semVersion
+    "appVersion: " + version
   );
-
-  
 
   fs.writeFile(dir, updatedChartYamlContent, (err) => {
     if (err) {
@@ -46,13 +37,18 @@ function changeAppVersion(dir, semVersion, isSemVer) {
 }
 
 try {
-  const inputAppVersion = core.getInput('appVersion');
+  const inputAppVersion = core.getInput("appVersion");
 
-  if (isSemVer) {
-    verifySemVer(semVersion);
-  }
+  var dir = "test/charts/awesome/Chart.yaml";
+  var chartYamlContent = readChart(dir);
 
-  var res = changeAppVersion("test/charts/awesome/Chart.yaml", inputAppVersion, false);
+  var res = changeAppVersion(
+    chartYamlContent,
+    dir,
+    inputAppVersion,
+    regexSemVer.test(version)
+  );
+
   core.setOutput("result", res);
 } catch (error) {
   core.setFailed(error.message);
