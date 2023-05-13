@@ -46,7 +46,7 @@ try {
     chartYamlContent,
     dir,
     inputAppVersion,
-    regexSemVer.test(version)
+    regexSemVer.test(inputAppVersion)
   );
 
   core.setOutput("result", res);
