@@ -20,14 +20,33 @@ Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion
 
 ```yaml
 steps:
-- name: Checkout
-  uses: actions/checkout@v3
-- name: Helm Chart Bump AppVersion
-  uses: ./ # Uses an action in the root directory
-  id: appversionbump
-  with:
-    appversion: ${{ github.event.client_payload.appversion }}
-- name: Output
-  run: echo "${{ steps.appversionbump.outputs.result }}"
-- uses: stefanzweifel/git-auto-commit-action@v4
+  - name: Checkout
+    uses: actions/checkout@v3
+  - name: Helm Chart Bump AppVersion
+    uses: ./ # Uses an action in the root directory
+    id: appversionbump
+    with:
+      appversion: ${{ github.event.client_payload.appversion }}
+  - name: Output
+    run: echo "${{ steps.appversionbump.outputs.result }}"
+  - uses: stefanzweifel/git-auto-commit-action@v4
 ```
+
+## Contributing
+
+Please read [Creating a JavaScript action](https://docs.github.com/en/actions/creating-actions/creating-a-javascript-action) to understand the core principles.
+
+### Dependencies
+
+```sh
+#GitHub Action Deps
+npm install @actions/core
+npm install @actions/github
+#Vercel, for packaging action
+npm i -g @vercel/ncc
+```
+
+### Other useful docs
+
+ - [Rate limits, Resources in the REST API \(GitHub REST API\)](docs.github.com/en/rest/overview/resources-in-the-rest-api?apiVersion=2022-11-28#rate-limits)
+ - [Create a repository dispatch event \(GitHub REST API\)](docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event)
