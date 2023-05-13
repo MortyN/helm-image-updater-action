@@ -1,13 +1,13 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Helm Chart AppVersion Bumper'
+description: 'Bumping AppVersion based on input'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  appVersion:  # id of input
+    description: 'appVersion to replace in Helm Chart'
     required: true
-    default: 'World'
+    default: ''
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  result: # id of output
+    description: 'appVersion Changed'
 runs:
   using: 'node16'
-  main: 'dist.js'
+  main: 'dist/index.js'

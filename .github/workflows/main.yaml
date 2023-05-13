@@ -1,31 +1,21 @@
 # workflow triggers
 on:
-  [push]
-  # push:
-  #   branches: [ source ]
-  # pull_request:
-  #   branches: [ source ]
-  # workflow_dispatch:
-
-  # # Allows external webhook trigger
-  # repository_dispatch:
-  #   types:
-  #     - webhook
-  # build process
+  repository_dispatch:
+    types: [bump_appversion]
 jobs:
-  hello_world_job:
+  helm_appversion_bumper:
     runs-on: ubuntu-latest
-    name: A job to say hello
+    name: Helm Chart Bump AppVersion
     steps:
       # To use this repository's private action,
       # you must check out the repository
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Hello world action step
+      - name: Helm Chart Bump AppVersion
         uses: ./ # Uses an action in the root directory
-        id: hello
+        id: appversionbump
         with:
-          who-to-greet: 'Morten the epic gamer'
+          appVersion: ${{ github.event.client_payload.appversion }}
       # Use the output from the `hello` step
-      - name: Get the output time
-        run: echo "The time was ${{ steps.hello.outputs.time }}"
+      - name: Output
+        run: echo "${{ steps.appversionbump.outputs.result }}"
