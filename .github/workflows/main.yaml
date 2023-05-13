@@ -15,7 +15,7 @@ jobs:
         uses: ./ # Uses an action in the root directory
         id: appversionbump
         with:
-          appVersion: ${{ github.event.client_payload.appversion }}
+          appversion: ${{ github.event.client_payload.appversion }}
       # Use the output from the `hello` step
       - name: Output
         run: echo "${{ steps.appversionbump.outputs.result }}"

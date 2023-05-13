@@ -1,7 +1,7 @@
 name: 'Helm Chart AppVersion Bumper'
 description: 'Bumping AppVersion based on input'
 inputs:
-  appVersion:  # id of input
+  appversion:  # id of input
     description: 'appVersion to replace in Helm Chart'
     required: true
     default: ''

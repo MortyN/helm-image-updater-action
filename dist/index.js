@@ -9828,7 +9828,7 @@ function changeAppVersion(content, dir, version, isSemVer) {
 }
 
 try {
-  const inputAppVersion = core.getInput("appVersion");
+  const inputAppVersion = core.getInput("appversion");
 
   var dir = "test/charts/awesome/Chart.yaml";
   var chartYamlContent = readChart(dir);
