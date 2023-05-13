@@ -9812,7 +9812,7 @@ function readChart(dir) {
   }
 }
 
-function changeAppVersion(content, dir, appVersion, isSemVer) {
+function changeAppVersion(content, dir, version, isSemVer) {
   var updatedChartYamlContent = content.replace(
     regexAppVersion,
     "appVersion: " + version
@@ -9837,7 +9837,7 @@ try {
     chartYamlContent,
     dir,
     inputAppVersion,
-    regexSemVer.test(version)
+    regexSemVer.test(inputAppVersion)
   );
 
   core.setOutput("result", res);
