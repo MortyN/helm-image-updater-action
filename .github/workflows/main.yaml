@@ -19,3 +19,4 @@ jobs:
       # Use the output from the `hello` step
       - name: Output
         run: echo "${{ steps.appversionbump.outputs.result }}"
+      - uses: stefanzweifel/git-auto-commit-action@v4
