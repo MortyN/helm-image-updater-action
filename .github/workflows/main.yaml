@@ -6,6 +6,10 @@ jobs:
   helm_appversion_bumper:
     runs-on: ubuntu-latest
     name: Helm Chart Bump AppVersion
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
     steps:
       # To use this repository's private action,
       # you must check out the repository
