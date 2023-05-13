@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Helm Chart Bump AppVersion
-        uses: ./action.yaml # Uses an action in the root directory
+        uses: ./ # Uses an action in the root directory
         id: appversionbump
         with:
           appversion: ${{ github.event.client_payload.appversion }}
