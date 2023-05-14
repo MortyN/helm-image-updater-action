@@ -1,8 +1,65 @@
 # Helm Chart AppVersion Promoter
 
-This action promotes a Helm Charts AppVersion based on external webhook.
+This action promotes a Helm Charts AppVersion based on external webhook/http-request.
 
-## Example Request
+*This Action alone will not trigger a version update, you will need a GitHub pipeline or thereabouts*
+
+## How does it work?
+
+The Workflow will trigger on a [external request](#example-request), and overwrite the **appVersion** value in Chart.yaml based on appVersion from the request body.
+
+## Prerequisites
+
+### **Helm Chart**
+To insure a single source of truth to the image version, your Helm template for deployment/pod needs to have **appVersion** from Chart.yaml implemented.
+
+Chart.yaml example:
+```yaml
+apiVersion: v2
+name: awesomechart
+appVersion: 1.3.8 #this can be semver, digest, tag etc.
+version: 1.2.1
+```
+
+Deployment Template Example:
+```yaml
+containers:
+  - name: example-container
+    image: registry.azurecr.io/platform-tools/go-httpbin:{{.Chart.AppVersion}}
+```
+---
+
+## Example usage in jobs:
+
+```yaml
+on:
+  repository_dispatch:
+    types: [bump_appversion]
+jobs:
+  helm_appversion_bumper:
+    runs-on: ubuntu-latest
+    name: Helm Chart Bump AppVersion
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Helm Chart Bump AppVersion
+        uses: ./ # Uses an action in the root directory
+        id: appversionbump
+        with:
+          appversion: ${{ github.event.client_payload.appversion }}
+      # Use the output from the `appversionbump` step
+      - name: Output
+        run: echo "${{ steps.appversionbump.outputs.result }}"
+      - uses: stefanzweifel/git-auto-commit-action@v4
+```
+
+## How to trigger, example request:
 
 ```sh
 curl -L \
@@ -15,22 +72,6 @@ curl -L \
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
-
-## Example usage in jobs
-
-```yaml
-steps:
-  - name: Checkout
-    uses: actions/checkout@v3
-  - name: Helm Chart Bump AppVersion
-    uses: ./ # Uses an action in the root directory
-    id: appversionbump
-    with:
-      appversion: ${{ github.event.client_payload.appversion }}
-  - name: Output
-    run: echo "${{ steps.appversionbump.outputs.result }}"
-  - uses: stefanzweifel/git-auto-commit-action@v4
-```
 
 ## Contributing
 
