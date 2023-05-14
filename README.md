@@ -53,6 +53,7 @@ jobs:
         id: appversionbump
         with:
           appversion: ${{ github.event.client_payload.appversion }}
+          helmchartdir: ${{ github.event.client_payload.helmchartdir }}
       # Use the output from the `appversionbump` step
       - name: Output
         run: echo "${{ steps.appversionbump.outputs.result }}"
@@ -68,7 +69,7 @@ curl -L \
   -H "Authorization: Bearer <YOUR-TOKEN>"\
   -H "X-GitHub-Api-Version: 2022-11-28" \
   https://api.github.com/repos/OWNER/REPO/dispatches \
-  -d '{"event_type":"bump_appversion","client_payload":{"appversion":0.0.8}}'
+  -d '{"event_type":"bump_appversion","client_payload":{"appversion":"0.0.8", "helmchartdir": "test/charts/semver/Chart.yaml"}}'
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event

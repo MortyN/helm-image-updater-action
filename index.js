@@ -38,13 +38,13 @@ function changeAppVersion(content, dir, version, isSemVer) {
 
 try {
   const inputAppVersion = core.getInput("appversion");
+  const inputHelmChartDir = core.getInput("helmchartdir");
 
-  var dir = "test/charts/awesome/Chart.yaml";
-  var chartYamlContent = readChart(dir);
+  var chartYamlContent = readChart(inputHelmChartDir);
 
   var res = changeAppVersion(
     chartYamlContent,
-    dir,
+    inputHelmChartDir,
     inputAppVersion,
     regexSemVer.test(inputAppVersion)
   );

@@ -20,6 +20,7 @@ jobs:
         id: appversionbump
         with:
           appversion: ${{ github.event.client_payload.appversion }}
+          helmchartdir: ${{ github.event.client_payload.helmchartdir }}
       # Use the output from the `hello` step
       - name: Output
         run: echo "${{ steps.appversionbump.outputs.result }}"

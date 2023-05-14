@@ -5,6 +5,10 @@ inputs:
     description: 'appVersion to replace in Helm Chart'
     required: true
     default: ''
+  helmchartdir:  # id of input
+    description: 'directory of helm chart'
+    required: true
+    default: ''
 outputs:
   result: # id of output
     description: 'appVersion Changed'
