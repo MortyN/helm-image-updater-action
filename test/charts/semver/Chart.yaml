@@ -1,4 +1,4 @@
 apiVersion: v2
 name: semver
-appVersion: 0.0.8
+appVersion: sha:fewf7ew8fewf78ew7f
 version: 0.0.1
