@@ -6,7 +6,7 @@ This action promotes a Helm Charts AppVersion based on external webhook/http-req
 
 ## How does it work?
 
-The Workflow will trigger on a [external request](#example-request), and overwrite the **appVersion** value in Chart.yaml based on appVersion from the request body.
+The Workflow will trigger on a [external request](#how-to-trigger-example-request), and overwrite the **appVersion** value in Chart.yaml based on appVersion from the request body.
 
 ## Prerequisites
 
