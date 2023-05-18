@@ -1,4 +1,4 @@
-# Helm Chart AppVersion Promoter
+# Helm Image Updater
 
 This action promotes a Helm Charts AppVersion based on external webhook/http-request.
 
