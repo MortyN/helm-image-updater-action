@@ -63,6 +63,7 @@ jobs:
 
 ## Github Workflow trigger example (from the image build pipeline):
 
+### Simple Curl workflow step:
 ```yaml
 steps:
 - name: Bump AppVersion
@@ -78,6 +79,20 @@ steps:
     -H "X-GitHub-Api-Version: 2022-11-28" \
     https://api.github.com/repos/${{ env.GitRepo }}/dispatches \
     -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${{ env.AppVersion }}", "helmchartdir": "${{ env.ChartLocation }}"}}'
+```
+
+### Self-contained GitHub action trigger:
+
+```yaml
+steps:
+- name: Helm Chart Bump AppVersion
+  uses: MortyN/helm-image-updater-trigger-action@v1.4
+  id: triggerappversionbump
+  with:
+    git-repo: MortyN/helm-repo
+    chart-location: charts/piclustermetrics/Chart.yaml
+    appversion: ${{ env.IMAGEVERSION }}
+    actions-pat-key: ${{ secrets.ACTIONS_PAT_KEY }}
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
