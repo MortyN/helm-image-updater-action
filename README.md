@@ -27,9 +27,10 @@ containers:
   - name: example-container
     image: registry.azurecr.io/platform-tools/go-httpbin:{{.Chart.AppVersion}}
 ```
+
 ---
 
-## Example usage in jobs:
+## Example usage in Chart repo:
 
 ```yaml
 on:
@@ -60,16 +61,21 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
 ```
 
-## How to trigger, example request:
+## Github Workflow trigger example:
 
-```sh
-curl -L \
-  -X POST \
-  -H "Accept: application/vnd.github+json" \
-  -H "Authorization: Bearer <YOUR-TOKEN>"\
-  -H "X-GitHub-Api-Version: 2022-11-28" \
-  https://api.github.com/repos/OWNER/REPO/dispatches \
-  -d '{"event_type":"bump_appversion","client_payload":{"appversion":"0.0.8", "helmchartdir": "test/charts/semver/Chart.yaml"}}'
+```yaml
+- name: Bump AppVersion
+  env:
+    HelmRepo: MortyN/helm-repo
+    ChartLocation: charts/piclustermetrics/Chart.yaml
+  run: |
+    curl -L \
+    -X POST \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/$HelmRepo/dispatches \
+    -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${GITHUB_SHA}", "helmchartdir": "$ChartLocation"}}'
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
