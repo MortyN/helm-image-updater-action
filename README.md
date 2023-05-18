@@ -67,7 +67,7 @@ jobs:
 steps:
 - name: Bump AppVersion
   env:
-    HelmRepo: MortyN/helm-repo
+    GitRepo: MortyN/helm-repo
     ChartLocation: charts/piclustermetrics/Chart.yaml
     AppVersion: ${{ github.sha }}
   run: |
@@ -76,7 +76,7 @@ steps:
     -H "Accept: application/vnd.github+json" \
     -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
     -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/repos/${{ env.HelmRepo }}/dispatches \
+    https://api.github.com/repos/${{ env.GitRepo }}/dispatches \
     -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${{ env.AppVersion }}", "helmchartdir": "${{ env.ChartLocation }}"}}'
 ```
 
