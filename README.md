@@ -65,18 +65,19 @@ jobs:
 
 ```yaml
 steps:
-  - name: Bump AppVersion
-    env:
-      HelmRepo: MortyN/helm-repo
-      ChartLocation: charts/piclustermetrics/Chart.yaml
-    run: |
-      curl -L \
-      -X POST \
-      -H "Accept: application/vnd.github+json" \
-      -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
-      -H "X-GitHub-Api-Version: 2022-11-28" \
-      https://api.github.com/repos/${{ env.HelmRepo }}/dispatches \
-      -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${{ env.GITHUB_SHA }}", "helmchartdir": "${{ env.ChartLocation }}"}}'
+- name: Bump AppVersion
+  env:
+    HelmRepo: MortyN/helm-repo
+    ChartLocation: charts/piclustermetrics/Chart.yaml
+    AppVersion: ${{ github.sha }}
+  run: |
+    curl -L \
+    -X POST \
+    -H "Accept: application/vnd.github+json" \
+    -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
+    -H "X-GitHub-Api-Version: 2022-11-28" \
+    https://api.github.com/repos/${{ env.HelmRepo }}/dispatches \
+    -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${{ env.AppVersion }}", "helmchartdir": "${{ env.ChartLocation }}"}}'
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
