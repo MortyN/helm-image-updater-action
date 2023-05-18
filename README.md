@@ -61,21 +61,22 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v4
 ```
 
-## Github Workflow trigger example:
+## Github Workflow trigger example (from the image build pipeline):
 
 ```yaml
-- name: Bump AppVersion
-  env:
-    HelmRepo: MortyN/helm-repo
-    ChartLocation: charts/piclustermetrics/Chart.yaml
-  run: |
-    curl -L \
-    -X POST \
-    -H "Accept: application/vnd.github+json" \
-    -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
-    -H "X-GitHub-Api-Version: 2022-11-28" \
-    https://api.github.com/repos/$HelmRepo/dispatches \
-    -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${GITHUB_SHA}", "helmchartdir": "$ChartLocation"}}'
+steps:
+  - name: Bump AppVersion
+    env:
+      HelmRepo: MortyN/helm-repo
+      ChartLocation: charts/piclustermetrics/Chart.yaml
+    run: |
+      curl -L \
+      -X POST \
+      -H "Accept: application/vnd.github+json" \
+      -H "Authorization: ${{ secrets.ACTIONS_PAT_KEY }}" \
+      -H "X-GitHub-Api-Version: 2022-11-28" \
+      https://api.github.com/repos/${{ env.HelmRepo }}/dispatches \
+      -d '{"event_type":"bump_appversion","client_payload":{"appversion": "${{ env.GITHUB_SHA }}", "helmchartdir": "${{ env.ChartLocation }}"}}'
 ```
 
 Docs about this endpoint: https://docs.github.com/en/rest/repos/repos?apiVersion=2022-11-28#create-a-repository-dispatch-event
