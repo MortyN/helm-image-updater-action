@@ -9,11 +9,24 @@ This action promotes a Helm Charts AppVersion based on external webhook/http-req
 The Workflow will trigger on a [external request](#how-to-trigger-example-request), and overwrite the **appVersion** value in Chart.yaml based on appVersion from the request body.
 
 ```mermaid
-graph TD;
-    Image_Build_Pipeline-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+sequenceDiagram
+Developer->>GitHub Source Code Repo: git push
+GitHub Source Code Repo->>Image Build Workflow: Trigger Image Build Workflow
+Image Build Workflow->>GitHub API: Authenticated HTTP POST<br> request body:<br> appversion and helmchartdir
+box Green GitHub Source Code Repo
+    participant GitHub Source Code Repo
+    participant Image Build Workflow
+    end
+GitHub API->>Helm Image Updater Workflow: Trigger Helm Image Updater Workflow<br> with:<br> appversion and helmchartdir values
+Helm Image Updater Workflow->>Helm Image Updater Workflow: Checkout Repo
+Helm Image Updater Workflow->>Helm Image Updater Workflow: Run helm-image-updater-action@v1
+Helm Image Updater Workflow-)Helm Repo: Commit and Push Updated<br> Chart.yaml AppVersion<br>(With PAT token)
+box Purple Helm Chart Repo
+    participant Helm Image Updater Workflow
+    participant Helm Repo
+    end
+Helm Repo->>ArgoCD: Send Push Event Webhook
+ArgoCD->>Helm Repo: Checkout Repo, and updates Pod Image based on AppVersion change
 ```
 
 
