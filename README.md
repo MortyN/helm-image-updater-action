@@ -8,6 +8,15 @@ This action promotes a Helm Charts AppVersion based on external webhook/http-req
 
 The Workflow will trigger on a [external request](#how-to-trigger-example-request), and overwrite the **appVersion** value in Chart.yaml based on appVersion from the request body.
 
+```mermaid
+graph TD;
+    Image_Build_Pipeline-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+
 ## Prerequisites
 
 ### **Helm Chart**
