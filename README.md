@@ -72,7 +72,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Helm Chart Bump AppVersion
-        uses: ./ # Uses an action in the root directory
+        uses: MortyN/helm-image-updater-action@v1.0
         id: appversionbump
         with:
           appversion: ${{ github.event.client_payload.appversion }}
